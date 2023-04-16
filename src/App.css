@@ -40,30 +40,43 @@
     align-items: center;
     margin-top: 20px;
 }
-.services-section hr{
+.services-section hr.heading-hr{
     width: 200px;
     border-width: 4px;
     color: rgb(3, 100, 3);
 }
 .services-section .services{
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
 }
 .services-section .services .service-box{
     min-height: 250px;  
-    width: 300px;
     background-color: whitesmoke;
     border-radius: 10px;
-    box-shadow: 0px 0px 1px black;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.344);
+    margin: 20px;
+    transition: all 0.3s ease-in-out;
 }
 .services-section .services .service-box.box1{
     
-    align-self: left;
     justify-self: left;
 }
 .services-section .services .service-box.box2{
     justify-self: right;
-    align-self: right;
+}
+.service-heading{
+    font-size: 30px ;
+    font-weight: 600;
+}
+.searvice-desc{
+    font-size: 24px;
+    text-justify: inter-word;
+    padding: 5px;
+}
+.services-section .services .service-box:hover{
+    background-color: rgba(37, 37, 37, 0.705);
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.555);
+    margin: 20px;
+    color: white
 }
