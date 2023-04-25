@@ -1,7 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Header = () => {
+  const navigate = useNavigate()
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
   <div className="container-fluid">
@@ -27,8 +28,9 @@ const Header = () => {
        
       </ul>
       <form className="d-flex" role="search">
-        <button className="btn btn-outline-success mx-2" type="submit">Login</button>
-        <button className="btn btn-success mx-2" type="submit">Signup</button>
+        <button className="btn btn-outline-success mx-2" type="submit" onClick={(e)=> {
+          e.preventDefault()
+          navigate("/login")}}>Login</button>
       </form>
     </div>
   </div>

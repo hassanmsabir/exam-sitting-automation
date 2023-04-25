@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import { Dashboard, Home, Services } from './app/pages';
+import { Dashboard, Home, Login, Services } from './app/pages';
 import { Header, PrivateRoute, PublicRoute } from './app/components';
 
 function App() {
@@ -15,6 +15,7 @@ function App() {
         
         <Route element={<PublicRoute />}>
           <Route element={<Home />} caseSensitive path='/' />
+          <Route element={<Login />} caseSensitive path='/login' />
           <Route element={<Services />} caseSensitive path='/services' />
         </Route>
       </Routes>
