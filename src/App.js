@@ -7,6 +7,8 @@ function App() {
   return (
     <>
       <Header />
+      <div className='p-3'>
+
       <Routes>
         <Route element={<PrivateRoute />}>
           <Route element={<Dashboard />} caseSensitive path='/dashboard' />
@@ -14,11 +16,13 @@ function App() {
         </Route>
         
         <Route element={<PublicRoute />}>
-          <Route element={<Home />} caseSensitive path='/' />
           <Route element={<Login />} caseSensitive path='/login' />
-          <Route element={<Services />} caseSensitive path='/services' />
         </Route>
+          <Route element={<Home />} caseSensitive path='/' />
+          <Route element={<Services />} caseSensitive path='/services' />
       </Routes>
+      </div>
+
     </>
   );
 }

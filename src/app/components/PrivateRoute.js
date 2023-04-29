@@ -1,9 +1,12 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Navigate, Outlet, useLocation } from 'react-router-dom'
 
 const PrivateRoute = () => {
+  const isLogged = (localStorage.getItem("userToken"))
+  const location = useLocation()
   return (
-    <Outlet />
+    isLogged ? 
+    <Outlet />: <Navigate to={"/login"} state={{from: location}} replace/>
   )
 }
 

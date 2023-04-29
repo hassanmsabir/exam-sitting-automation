@@ -1,110 +1,163 @@
-@import url('https://fonts.googleapis.com/css2?family=Rubik+Pixels&display=swap');
-.main-banner{
-    min-height: 500px;
-    height: 400px;
-    font-size: 30px;
-    color: whitesmoke;
-    background-image: url(../public/cheating\ students.jpg);
-    background-position: bottom;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
+@import url("https://fonts.googleapis.com/css2?family=Rubik+Pixels&display=swap");
+body {
+  background-color: whitesmoke;
 }
-.main-banner .text-cover{
-    width: 70%;
-    height: 100%;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.788), rgba(66, 65, 65, 0));
-    display: flex;
-    align-items: center;
+.main-banner {
+  min-height: 500px;
+  height: 400px;
+  font-size: 30px;
+  color: whitesmoke;
+  background-image: url(../public/cheating\ students.jpg);
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
 }
-.main-banner .banner-text{
-    width: 250px;
-    font-weight: 600;
+.main-banner .text-cover {
+  width: 70%;
+  height: 100%;
+  background-image: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.788),
+    rgba(66, 65, 65, 0)
+  );
+  display: flex;
+  align-items: center;
 }
-.main-banner .banner-text span{
-    color: red;
-    margin: 0px 10px;
-    font-family: 'Rubik Pixels', cursive;
-    font-size: 40px;
-    font-weight: 500;
-
+.main-banner .banner-text {
+  width: 250px;
+  font-weight: 600;
 }
-
+.main-banner .banner-text span {
+  color: red;
+  margin: 0px 10px;
+  font-family: "Rubik Pixels", cursive;
+  font-size: 40px;
+  font-weight: 500;
+}
 
 /* ======================================================================== */
 
-
-.services-section{
-    min-height: 500px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
+.services-section {
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
 }
-.services-section hr.heading-hr{
-    width: 200px;
-    border-width: 4px;
-    color: rgb(3, 100, 3);
+.services-section hr.heading-hr {
+  width: 200px;
+  border-width: 4px;
+  color: rgb(3, 100, 3);
 }
-.services-section .services{
-    width: 100%;
-    display: grid;
+.services-section .services {
+  width: 100%;
+  display: grid;
 }
-.services-section .services .service-box{
-    min-height: 250px;  
-    background-color: whitesmoke;
-    box-shadow: -5px 10px 15px rgba(0, 0, 0, 0.344);
-    margin: 20px;
-    transition: all 0.3s ease-in-out;
+.services-section .services .service-box {
+  min-height: 250px;
+  background-color: whitesmoke;
+  box-shadow: -5px 10px 15px rgba(0, 0, 0, 0.344);
+  margin: 20px;
+  transition: all 0.3s ease-in-out;
 }
-.services-section .services .service-box.box1{
-    
-    justify-self: left;
+.services-section .services .service-box.box1 {
+  justify-self: left;
 }
-.services-section .services .service-box.box2{
-    justify-self: right;
+.services-section .services .service-box.box2 {
+  justify-self: right;
 }
-.service-heading{
-    font-size: 30px ;
-    font-weight: 600;
+.service-heading {
+  font-size: 30px;
+  font-weight: 600;
 }
-.searvice-desc{
-    font-size: 24px;
-    text-justify: inter-word;
-    padding: 5px;
+.searvice-desc {
+  font-size: 24px;
+  text-justify: inter-word;
+  padding: 5px;
 }
-.services-section .services .service-box:hover{
-    background-color: rgba(37, 37, 37, 0.705);
-    margin: 20px;
-    color: white
+.services-section .services .service-box:hover {
+  background-color: rgba(37, 37, 37, 0.705);
+  margin: 20px;
+  color: white;
 }
 
-.login-page{
-    background-image: url(../public/cheating\ students.jpg);
-    background-position: bottom;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    min-height: 100vh;
+.login-page {
+  background-image: url(../public/cheating\ students.jpg);
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
 }
-.login-page .login-overlay{
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.315);
+.login-page .login-overlay {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.315);
 }
-.login-page .login-overlay .login-box{
-    width: 350px;
-    height: 300px;
-    background-color: whitesmoke;
-    box-shadow: 0px 0px 10px black;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+.login-page .login-overlay .login-box {
+  width: 350px;
+  height: 300px;
+  background-color: whitesmoke;
+  box-shadow: 0px 0px 10px black;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.cursor-pointer {
+  cursor: pointer !important;
+}
+.main-box {
+  background-color: white;
+  min-height: calc(100vh - 100px);
+}
+.main-box .top-row .counter-box {
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.582);
+  width: 220px;
+  height: 100px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.main-box .top-row .counter-box:hover {
+  box-shadow: 0px 0px 15px black;
+}
 
+.item-details {
+  width: 220px;
+  min-height: 310px;
+  max-height: 310px;
+  overflow: hidden;
+  padding: 5px;
+  position: relative;
 }
-.cursor-pointer{
-    cursor: pointer!important;
+.item-details .customize-btn {
+  position: sticky;
+  bottom: 0;
+}
+.item-details-list-ul {
+  list-style: none;
+  padding: 0px;
+}
+.item-details-list-li {
+  padding: 10px 3px;
+  transition: all 0.2s ease;
+  color: white;
+  font-size: 20px;
+  margin: 0px;
+  text-align: center;
+  cursor: default;
+}
+.item-details-list-li:hover {
+  background-color: white;
+  color: black;
+}
+.err-msg {
+  margin: 0px !important;
+}
+
+.overflow-auto {
+  overflow: auto;
 }

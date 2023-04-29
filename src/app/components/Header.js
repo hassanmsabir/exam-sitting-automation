@@ -1,7 +1,11 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { actionAPI, useSharedDispatcher, useSharedSelector } from '../shared'
 
 const Header = () => {
+  const {LoginUserData, LoginUserDataSuccess} = useSharedSelector(state=> state.LoginUserData)
+  const apiDispatcher = useSharedDispatcher()
+
   const navigate = useNavigate()
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -15,6 +19,9 @@ const Header = () => {
         <li className="nav-item">
           <Link className="nav-link active" aria-current="page" to="/">Home</Link>
         </li>
+        {localStorage.getItem("userToken") && <li className="nav-item">
+          <Link className="nav-link active" aria-current="page" to="/dashboard">Dashboard</Link>
+        </li>}
        
         <li className="nav-item dropdown">
           <Link className="nav-link dropdown-toggle" to="/services" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -28,9 +35,14 @@ const Header = () => {
        
       </ul>
       <form className="d-flex" role="search">
-        <button className="btn btn-outline-success mx-2" type="submit" onClick={(e)=> {
+
+        {localStorage.getItem("userToken") ? <button className="btn btn-outline-success mx-2" type="submit" onClick={(e)=> {
           e.preventDefault()
-          navigate("/login")}}>Login</button>
+          localStorage.clear()
+          apiDispatcher(actionAPI.loginUserResetData())
+          navigate("/")}}>Logout</button>: <button className="btn btn-outline-success mx-2" type="submit" onClick={(e)=> {
+            e.preventDefault()
+            navigate("/login")}}>Login</button>}
       </form>
     </div>
   </div>

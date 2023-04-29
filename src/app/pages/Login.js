@@ -1,11 +1,32 @@
-import { Input } from 'antd'
-import React, { useState } from 'react'
+import { Input, notification } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { actionAPI, useSharedDispatcher, useSharedSelector } from '../shared'
+
+const Context = React.createContext({
+    name: 'Default',
+  });
 
 const Login = () => {
     const [username, setUsername] = useState("")
     const [usernameErrMsg, setUsernameErrMsg] = useState("")
     const [passwordErrMsg, setPasswordErrMsg] = useState("")
     const [password, setPassword] = useState("")
+
+    const {LoginUserData, LoginUserDataLoading, LoginUserDataSuccess, LoginUserDataFailed, LoginUserDataErrorMessage} = useSharedSelector(state=> state.LoginUserData)
+
+    const navigate = useNavigate()
+    const apiDispatcher = useSharedDispatcher()
+
+
+    const [api, contextHolder] = notification.useNotification();
+  const openNotification = (placement, type, message="", description="") => {
+    api[type]({
+      message: message,
+      description: description,
+      placement,
+    });
+  };
 
     const validateLoginFields = ()=>{
         let errCaught = false
@@ -23,10 +44,21 @@ const Login = () => {
         if(validateLoginFields()){
             return
         }
-
+        apiDispatcher(actionAPI.loginUserAPI({username, password}))
     }
+
+    useEffect(()=>{
+        if(LoginUserDataSuccess){
+            localStorage.setItem("userToken", JSON.stringify(LoginUserData))
+            navigate("/dashboard")
+        }
+        else if(LoginUserDataFailed){
+            openNotification("topRight", "error", "Login Failed", LoginUserDataErrorMessage)
+        }
+    },[LoginUserDataLoading])
   return (
     <>
+    {contextHolder}
     <div className='login-page'>
     <div className='login-overlay'>
     <div className='login-box'>
