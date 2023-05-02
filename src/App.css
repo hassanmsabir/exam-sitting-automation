@@ -161,3 +161,16 @@ body {
 .overflow-auto {
   overflow: auto;
 }
+.h-420px {
+  height: 420px !important;
+}
+.bg-purple {
+  background-color: purple !important;
+}
+
+.w-33 {
+  width: 33.33% !important;
+}
+.rounded-0 {
+  border-radius: 0px !important;
+}

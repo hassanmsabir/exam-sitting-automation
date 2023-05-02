@@ -5,6 +5,10 @@ import {
   loginUserAPI,
   loginUserResetData,
 } from "./actions/AuthenticateUser/Login";
+import { getAllBatchesWithSectionsAPI } from "./actions/BatchActions/GetAllBatchesWithSections";
+import { getAllBatchesAPI } from "./actions/BatchActions/GetAllBatches";
+import { getAllCourseMapsAPI } from "./actions/CourseActions/ListAllCourseMaps";
+import { getAllStudentsAPI } from "./actions/StudentActions/ListAllStudents";
 
 export const actionAPI = {
   getMyUserAPI,
@@ -12,4 +16,8 @@ export const actionAPI = {
   loginUserResetData,
   getAllTeachersAPI,
   getAllCoursesAPI,
+  getAllBatchesWithSectionsAPI,
+  getAllBatchesAPI,
+  getAllCourseMapsAPI,
+  getAllStudentsAPI,
 };

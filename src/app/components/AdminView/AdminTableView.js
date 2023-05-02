@@ -4,7 +4,14 @@ import Settings from "../../shared/redux/config/Settings";
 import { actionAPI, useSharedDispatcher } from "../../shared";
 import TitlesList from "../../shared/constant/TitlesList";
 
-const AdminTableView = ({ activeType, teacherData, coursesData }) => {
+const AdminTableView = ({
+  activeType,
+  teacherData,
+  coursesData,
+  batchesData,
+  courseMapsData,
+  studentsData,
+}) => {
   const apiDispatcher = useSharedDispatcher();
   const [selectedData, setSelectedData] = useState(null);
 
@@ -16,6 +23,12 @@ const AdminTableView = ({ activeType, teacherData, coursesData }) => {
   const [isEditCourseDataModalOpen, setIsEditCourseDataModalOpen] =
     useState(false);
   const [isDeleteCourseDataModalOpen, setIsDeleteCourseDataModalOpen] =
+    useState(false);
+  const [isDeleteCourseMapModalOpen, setIsDeleteCourseMapModalOpen] =
+    useState(false);
+  const [isDeleteBatchDataModalOpen, setIsDeleteBatchDataModalOpen] =
+    useState(false);
+  const [isDeleteStudentDataModalOpen, setIsDeleteStudentDataModalOpen] =
     useState(false);
 
   const [newTeacherTitle, setNewTeacherTitle] = useState("Mr");
@@ -61,6 +74,57 @@ const AdminTableView = ({ activeType, teacherData, coursesData }) => {
       description: description,
       placement,
     });
+  };
+
+  const handleStudentDeleteClick = () => {
+    fetch(`${Settings.apiUrl}deleteStudentData/${selectedData._id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((deletedBatch) => {
+        openNotification(
+          "topRight",
+          "success",
+          "Course Map deleted successfully"
+        );
+        apiDispatcher(actionAPI.getAllStudentsAPI());
+        setIsDeleteStudentDataModalOpen(false);
+      })
+      .catch((err) => {
+        openNotification("topRight", "error", "Error Deleting Data", "err");
+      });
+  };
+  const handleCourseMapDeleteClick = () => {
+    fetch(`${Settings.apiUrl}deleteCourseMap/${selectedData._id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((deletedBatch) => {
+        openNotification(
+          "topRight",
+          "success",
+          "Course Map deleted successfully"
+        );
+        apiDispatcher(actionAPI.getAllCourseMapsAPI());
+        setIsDeleteCourseMapModalOpen(false);
+      })
+      .catch((err) => {
+        openNotification("topRight", "error", "Error Deleting Data", "err");
+      });
+  };
+  const handleBatchDataDeleteClick = () => {
+    fetch(`${Settings.apiUrl}deleteBatch/${selectedData._id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((deletedBatch) => {
+        openNotification("topRight", "success", "Batch deleted successfully");
+        apiDispatcher(actionAPI.getAllBatchesWithSectionsAPI());
+        setIsDeleteBatchDataModalOpen(false);
+      })
+      .catch((err) => {
+        openNotification("topRight", "error", "Error Deleting Data", err);
+      });
   };
 
   const handleCourseDataEditBtnClick = (record) => {
@@ -191,7 +255,7 @@ const AdminTableView = ({ activeType, teacherData, coursesData }) => {
       setNewTeacherGenderErrMsg("Please select a Gender to proceed");
       errCaught = true;
     }
-    if (newTeacherPassword != newTeacherConfirmPassword) {
+    if (newTeacherPassword !== newTeacherConfirmPassword) {
       setNewTeacherConfirmPasswordErrMsg("Passwords do not match");
       errCaught = true;
     }
@@ -235,6 +299,7 @@ const AdminTableView = ({ activeType, teacherData, coursesData }) => {
       })
       .catch((error) => console.log("error", error));
   };
+
   //   ==================================================
 
   const TeacherColumns = [
@@ -338,6 +403,139 @@ const AdminTableView = ({ activeType, teacherData, coursesData }) => {
             onClick={() => {
               setSelectedData(record);
               setIsDeleteCourseDataModalOpen(true);
+            }}
+          >
+            Delete
+          </span>
+        );
+      },
+    },
+  ];
+  const BatchColumns = [
+    {
+      title: "Batch Name",
+      dataIndex: "batchName",
+    },
+    {
+      title: "Batch Section",
+      dataIndex: "sectionName",
+    },
+    {
+      title: "Text",
+      key: "Text",
+      render: (_, record) => {
+        return (
+          <span>
+            {record?.batchName} - Section {record?.sectionName}
+          </span>
+        );
+      },
+    },
+    {
+      title: "Delete",
+      key: "Delete",
+      render: (_, record) => {
+        return (
+          <span
+            className="text-danger cursor-pointer"
+            onClick={() => {
+              setSelectedData(record);
+              setIsDeleteCourseMapModalOpen(true);
+            }}
+          >
+            Delete
+          </span>
+        );
+      },
+    },
+  ];
+  const CourseMapsColumns = [
+    {
+      title: "Course Name",
+      dataIndex: "courseFullTitle",
+    },
+    {
+      title: "Teacher",
+      dataIndex: "teacherFullName",
+    },
+    {
+      title: "Batch",
+      dataIndex: "batchName",
+    },
+    {
+      title: "Section",
+      dataIndex: "sectionName",
+    },
+    {
+      title: "Status",
+      key: "currentStatus",
+      render: (_, record) => (
+        <span
+          className={
+            " " +
+            (record?.currentStatus === "active"
+              ? " text-success "
+              : record?.currentStatus === "completed"
+              ? " text-warning "
+              : " text-danger ")
+          }
+        >
+          {record?.currentStatus}
+        </span>
+      ),
+    },
+
+    {
+      title: "Delete",
+      key: "Delete",
+      render: (_, record) => {
+        return (
+          <span
+            className="text-danger cursor-pointer"
+            onClick={() => {
+              console.log(record);
+              setSelectedData(record);
+              setIsDeleteCourseMapModalOpen(true);
+            }}
+          >
+            Delete
+          </span>
+        );
+      },
+    },
+  ];
+  const StudentsColumns = [
+    {
+      title: "Name",
+      dataIndex: "fullname",
+    },
+    {
+      title: "Reg No",
+      dataIndex: "fullReg",
+    },
+    {
+      title: "GPA",
+      dataIndex: "gpa",
+    },
+    {
+      title: "Gender",
+      dataIndex: "gender",
+    },
+    {
+      title: "Batch",
+      dataIndex: "semesterType",
+    },
+
+    {
+      title: "Delete",
+      key: "Delete",
+      render: (_, record) => {
+        return (
+          <span
+            className="text-danger cursor-pointer"
+            onClick={() => {
+              setSelectedData(record);
+              setIsDeleteStudentDataModalOpen(true);
             }}
           >
             Delete
@@ -606,9 +804,61 @@ const AdminTableView = ({ activeType, teacherData, coursesData }) => {
             <Table columns={CoursesColumns} dataSource={coursesData} />
           </div>
         </>
-      ) : (
-        <></>
-      )}
+      ) : activeType === "batchesTable" ? (
+        <>
+          <div className="mt-3 overflow-auto">
+            <h3 className="text-center text-primary">Batches Table</h3>
+            <Table columns={BatchColumns} dataSource={batchesData} />
+          </div>
+
+          <Modal
+            title="Delete Batch Data"
+            open={isDeleteBatchDataModalOpen}
+            onCancel={() => setIsDeleteBatchDataModalOpen(false)}
+            onOk={() => {
+              handleBatchDataDeleteClick();
+            }}
+          >
+            Are you sure you want to delete this course?
+          </Modal>
+        </>
+      ) : activeType === "courseMapsTable" ? (
+        <>
+          <div className="mt-3 overflow-auto">
+            <h3 className="text-center text-primary">Course Maps Table</h3>
+            <Table columns={CourseMapsColumns} dataSource={courseMapsData} />
+          </div>
+
+          <Modal
+            title="Delete Course Map Data"
+            open={isDeleteCourseMapModalOpen}
+            onCancel={() => setIsDeleteCourseMapModalOpen(false)}
+            onOk={() => {
+              handleCourseMapDeleteClick();
+            }}
+          >
+            Are you sure you want to delete this course?
+          </Modal>
+        </>
+      ) : activeType === "studentsTable" ? (
+        <>
+          <div className="mt-3 overflow-auto">
+            <h3 className="text-center text-primary">Students Table</h3>
+            <Table columns={StudentsColumns} dataSource={studentsData} />
+          </div>
+
+          <Modal
+            title="Delete Student Data"
+            open={isDeleteStudentDataModalOpen}
+            onCancel={() => setIsDeleteStudentDataModalOpen(false)}
+            onOk={() => {
+              handleStudentDeleteClick();
+            }}
+          >
+            Are you sure you want to delete this course?
+          </Modal>
+        </>
+      ) : null}
     </>
   );
 };

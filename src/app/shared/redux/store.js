@@ -4,6 +4,10 @@ import {
   LoginUserData,
   ListAllTeachers,
   ListAllCourses,
+  ListAllBatchesWithSections,
+  ListAllBatches,
+  ListAllCourseMaps,
+  ListAllStudents,
 } from "./actions";
 
 export const store = configureStore({
@@ -12,5 +16,9 @@ export const store = configureStore({
     LoginUserData,
     ListAllTeachers,
     ListAllCourses,
+    ListAllBatchesWithSections,
+    ListAllBatches,
+    ListAllCourseMaps,
+    ListAllStudents,
   },
 });
