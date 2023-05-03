@@ -115,6 +115,8 @@ const AdminDashboardView = () => {
     batchId: "",
     sectionId: "",
     subjectIds: [],
+    teacherReview: "3",
+    previousCheatingHistory: 0,
   });
   const [addNewStudentDataErrMsg, setAddNewStudentDataErrMsg] = useState({
     firstname: "",
@@ -198,6 +200,8 @@ const AdminDashboardView = () => {
       subjectIds: addNewStudentData.subjectIds,
       gpa: addNewStudentData.gpa,
       regNo: addNewStudentData.regNo,
+      cheatingHistory: addNewStudentData.previousCheatingHistory,
+      teacherReview: addNewStudentData.teacherReview,
     });
 
     var requestOptions = {
@@ -1285,7 +1289,7 @@ const AdminDashboardView = () => {
                 })
               }
             />
-            <span className="text-danger">{addNewStudentData.regNo}</span>
+            <span className="text-danger">{addNewStudentDataErrMsg.regNo}</span>
           </div>
 
           <div className="w-50 px-2 mt-3">
@@ -1318,6 +1322,57 @@ const AdminDashboardView = () => {
             <span className="text-danger">
               {addNewStudentDataErrMsg.sectionId}
             </span>
+          </div>
+          <div className="w-50 px-2 mt-3">
+            <p className="fw-bold">Teacher's Rating</p>
+            <Select
+              className="w-100"
+              placeholder="Student Intelligence"
+              value={addNewStudentData.teacherReview}
+              onChange={(e) => {
+                console.log("eeeee", e);
+                setAddNewStudentData({
+                  ...addNewStudentData,
+                  teacherReview: e,
+                });
+              }}
+              allowClear
+              filterOption={(input, option) =>
+                (option?.children ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
+            >
+              <Option value="1">Itelligent</Option>
+              <Option value="2">Good</Option>
+              <Option value="3">Average</Option>
+              <Option value="4">Slow</Option>
+              <Option value="5">Dull</Option>
+            </Select>
+          </div>
+          <div className="w-50 px-2 mt-3">
+            <p className="fw-bold">Ever Caught Cheating?</p>
+            <Select
+              className="w-100"
+              placeholder="Caught Cheating"
+              value={addNewStudentData.previousCheatingHistory}
+              onChange={(e) => {
+                console.log("eeeee", e);
+                setAddNewStudentData({
+                  ...addNewStudentData,
+                  previousCheatingHistory: e,
+                });
+              }}
+              allowClear
+              filterOption={(input, option) =>
+                (option?.children ?? "")
+                  .toLowerCase()
+                  .includes(input.toLowerCase())
+              }
+            >
+              <Option value={0}>NO</Option>
+              <Option value={1}>Yes</Option>
+            </Select>
           </div>
           <div className="w-100 px-2 mt-3">
             <p className="fw-bold">Courses Registered</p>
