@@ -113,8 +113,13 @@ const AdminTableView = ({
       });
   };
   const handleBatchDataDeleteClick = () => {
-    fetch(`${Settings.apiUrl}deleteBatch/${selectedData._id}`, {
-      method: "DELETE",
+    // /batchId=${selectedData?.batchId}&sectionId=${selectedData?.sectionId}
+    fetch(`${Settings.apiUrl}deleteSection`, {
+      method: "POST",
+      body: JSON.stringify({
+        batchId: selectedData?.batchId,
+        sectionId: selectedData?.sectionId,
+      }),
     })
       .then((res) => res.json())
       .then((deletedBatch) => {
@@ -123,7 +128,12 @@ const AdminTableView = ({
         setIsDeleteBatchDataModalOpen(false);
       })
       .catch((err) => {
-        openNotification("topRight", "error", "Error Deleting Data", err);
+        openNotification(
+          "topRight",
+          "error",
+          "Error Deleting Data",
+          "some Error Occured"
+        );
       });
   };
 
@@ -440,7 +450,9 @@ const AdminTableView = ({
             className="text-danger cursor-pointer"
             onClick={() => {
               setSelectedData(record);
-              setIsDeleteCourseMapModalOpen(true);
+              console.log(record);
+
+              setIsDeleteBatchDataModalOpen(true);
             }}
           >
             Delete
@@ -819,7 +831,7 @@ const AdminTableView = ({
               handleBatchDataDeleteClick();
             }}
           >
-            Are you sure you want to delete this course?
+            Are you sure you want to delete this batch Data?
           </Modal>
         </>
       ) : activeType === "courseMapsTable" ? (
