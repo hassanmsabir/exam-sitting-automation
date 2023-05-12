@@ -69,11 +69,12 @@ const AdminDashboardView = () => {
   const [newBatchName, setNewBatchName] = useState("SP");
   const [newBatchNameErrMsg, setNewBatchNameErrMsg] = useState("");
 
-  const [newBatchYear, setNewBatchYear] = useState();
+  const [newBatchYear, setNewBatchYear] = useState("");
   const [newBatchYearErrMsg, setNewBatchYearErrMsg] = useState("");
 
-  const [newBatchStartDate, setNewBatchStartDate] = useState(null);
-  const [newBatchStartDateErrMsg, setNewBatchStartDateErrMsg] = useState("");
+  const [newBatchProgramName, setNewBatchProgramName] = useState("BCS");
+  const [newBatchProgramNameErrMsg, setNewBatchProgramNameErrMsg] =
+    useState("");
 
   const [newBatchEndDate, setNewBatchEndDate] = useState(null);
   const [newBatchEndDateErrMsg, setNewBatchEndDateErrMsg] = useState("");
@@ -117,11 +118,11 @@ const AdminDashboardView = () => {
     subjectIds: [],
     teacherReview: "3",
     previousCheatingHistory: 0,
+    programName: "",
   });
   const [addNewStudentDataErrMsg, setAddNewStudentDataErrMsg] = useState({
     firstname: "",
     lastname: "",
-    title: "",
     gender: "",
     program: "",
     semesterType: "",
@@ -129,7 +130,10 @@ const AdminDashboardView = () => {
     gpa: "",
     batchId: "",
     sectionId: "",
+    courses: "",
   });
+  const [newStudentAvailableCoursesList, setNewStudentAvailableCoursesList] =
+    useState([]);
   const [api, contextHolder] = notification.useNotification();
   const openNotification = (
     placement,
@@ -145,35 +149,58 @@ const AdminDashboardView = () => {
   };
   const validateRegisterNewStudent = () => {
     let errCaught = false;
-
+    let newStudentValidMsgs = addNewStudentDataErrMsg;
     if (addNewStudentData.firstname.trim() === "") {
-      // setNewTeacherTitleErrMsg("Firstname cannot be empty");
+      newStudentValidMsgs.firstname = "Firstname cannot be empty";
+      setAddNewStudentDataErrMsg(newStudentValidMsgs);
+
       errCaught = true;
     }
-    if (addNewStudentData.title.trim() === "") {
-      // setNewTeacherFirstNameErrMsg("First Name cannot be empty");
-      errCaught = true;
-    }
+
     if (addNewStudentData.batchId.trim() === "") {
-      // setNewTeacherEmailErrMsg("Please select a Batch");
+      newStudentValidMsgs.regNo = "Please select a Batch";
+      setAddNewStudentDataErrMsg(newStudentValidMsgs);
+
       errCaught = true;
     }
     if (addNewStudentData.gender.trim() === "") {
+      newStudentValidMsgs.gender = "Please select a gender";
+      setAddNewStudentDataErrMsg(newStudentValidMsgs);
+
       // setNewTeacherPasswordErrMsg("Please select a gender");
       errCaught = true;
     }
     if (addNewStudentData.gpa === 0) {
       // setNewTeacherPasswordErrMsg("Student GPA is required");
+      newStudentValidMsgs.gpa = "Student GPA is required";
+      setAddNewStudentDataErrMsg(newStudentValidMsgs);
+
       errCaught = true;
     }
     if (addNewStudentData.program.trim() === "") {
-      // setNewTeacherUsernameErrMsg("Program cannot be empty");
+      newStudentValidMsgs.regNo = "Program cannot be empty";
+      setAddNewStudentDataErrMsg(newStudentValidMsgs);
+
       errCaught = true;
     }
     if (addNewStudentData.semesterType.trim() === "") {
       // setNewTeacherGenderErrMsg("Please select a Batch");
+
+      newStudentValidMsgs.regNo = "Please select a Batch";
+      setAddNewStudentDataErrMsg(newStudentValidMsgs);
+
       errCaught = true;
     }
+    if (addNewStudentData.subjectIds.length == 0) {
+      // setNewTeacherGenderErrMsg("Please select a Batch");
+
+      newStudentValidMsgs.courses = "Please select The Courses";
+      setAddNewStudentDataErrMsg(newStudentValidMsgs);
+
+      errCaught = true;
+    }
+
+    setAddNewStudentDataErrMsg(newStudentValidMsgs);
 
     return errCaught;
   };
@@ -351,12 +378,16 @@ const AdminDashboardView = () => {
   const validateNewBatchReq = () => {
     let errCaught = false;
 
-    if (newBatchName.trim() === "") {
+    if (newBatchName?.trim() === "") {
       setNewBatchNameErrMsg("Batch Name cannot be empty");
       errCaught = true;
     }
-    if (newBatchYear.trim() === "") {
-      newBatchYearErrMsg("Batch Year cannot be empty");
+    if (newBatchYear?.trim() === "") {
+      setNewBatchYearErrMsg("Batch Year cannot be empty");
+      errCaught = true;
+    }
+    if (newBatchProgramName?.trim() === "") {
+      newBatchYearErrMsg("Batch Program Name cannot be empty");
       errCaught = true;
     }
     return errCaught;
@@ -375,6 +406,7 @@ const AdminDashboardView = () => {
       sectionA: true,
       sectionB: newBatchSectionBChecked,
       sectionC: newBatchSectionCChecked,
+      programName: newBatchProgramName,
     });
 
     var requestOptions = {
@@ -459,7 +491,11 @@ const AdminDashboardView = () => {
       .catch((error) => console.log("error", error));
   };
 
-  const handleBatchChangeInCourseMapModal = (e, semesterType = "") => {
+  const handleBatchChangeInCourseMapModal = (
+    e,
+    semesterType = "",
+    programName = ""
+  ) => {
     setCourseMappingBatchId(e);
     setSectionsListFromAPI(null);
     setCourseMappingSectionId(null);
@@ -476,6 +512,7 @@ const AdminDashboardView = () => {
           ...addNewStudentData,
           batchId: e,
           semesterType: semesterType,
+          program: programName,
           sectionId: result?.entry[0]?._id,
         });
       })
@@ -501,8 +538,31 @@ const AdminDashboardView = () => {
       addNewStudentData.batchId !== "" &&
       addNewStudentData.sectionId !== ""
     ) {
+      // get list of courses for this batch section and ProgramName
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      var raw = JSON.stringify({
+        batchId: addNewStudentData.batchId,
+        sectionId: addNewStudentData.sectionId,
+      });
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      fetch(
+        "http://localhost:8000/listAllCoursesOfBatchSection",
+        requestOptions
+      )
+        .then((response) => response.json())
+        .then((result) => setNewStudentAvailableCoursesList(result))
+        .catch((error) => console.log("error", error));
     }
-  }, [addNewStudentData]);
+  }, [addNewStudentData.batchId, addNewStudentData.sectionId]);
   return (
     <>
       {contextHolder}
@@ -908,29 +968,25 @@ const AdminDashboardView = () => {
             <p className="err-msg text-danger">{newBatchYearErrMsg}</p>
           </div>
           <div className="w-50 px-2">
-            <p className="fw-bold mt-3">Start Date</p>
-            <DatePicker
-              placeholder="Start Date"
-              className="w-100"
-              onChange={(e, eStr) => {
-                setNewBatchStartDate(e);
-              }}
-            />
-            <p className="err-msg text-danger">{newBatchStartDateErrMsg}</p>
-          </div>
-          <div className="w-50 px-2">
             <p className="fw-bold mt-3">
-              End Date<span className="text-danger ms-1">*</span>
+              Program<span className="text-danger ms-1">*</span>
             </p>
-            <DatePicker
-              placeholder="End Date"
-              onChange={(e, eStr) => {
-                setNewBatchEndDate(e);
-              }}
+            <Select
+              placeholder="Select Program"
               className="w-100"
-            />
-            <p className="err-msg text-danger">{newBatchEndDateErrMsg}</p>
+              value={newBatchProgramName}
+              onChange={(e) => {
+                setNewBatchProgramName(e);
+              }}
+            >
+              <Option value="BCS">BCS</Option>
+              <Option value="BSE">BSE</Option>
+              <Option value="BCE">BCE</Option>
+              <Option value="BEE">BEE</Option>
+            </Select>
+            <p className="err-msg text-danger">{newBatchProgramNameErrMsg}</p>
           </div>
+
           <div className="w-50 px-2">
             <p className="fw-bold mt-3">
               Select Sections<span className="text-danger ms-1">*</span>
@@ -1054,7 +1110,9 @@ const AdminDashboardView = () => {
             >
               {BatchesListing
                 ? BatchesListing?.entry?.map((item) => (
-                    <Option value={item?._id}>{`${item?.batchName}`}</Option>
+                    <Option
+                      value={item?._id}
+                    >{`${item?.batchName} - ${item?.programName}`}</Option>
                   ))
                 : null}
             </Select>
@@ -1235,29 +1293,29 @@ const AdminDashboardView = () => {
             </p>
 
             <Select
-              className="w-33"
+              className="w-66"
               placeholder="Batch"
               value={addNewStudentData.batchId}
               onChange={(e, option) => {
-                setAddNewStudentData({
-                  ...addNewStudentData,
-                  semesterType: option.children,
-                  batchId: e,
-                });
+                console.log(option.children.split("-")[0].trim());
+                let semType = option.children.split("-")[0].trim();
+                let progType = option.children.split("-")[1].trim();
                 setAddNewStudentDataErrMsg({
                   ...addNewStudentDataErrMsg,
                   regNo: "",
                 });
-                handleBatchChangeInCourseMapModal(e, option.children);
+                handleBatchChangeInCourseMapModal(e, semType, progType);
               }}
             >
               <Option value="">Select</Option>
 
               {BatchesListing?.entry?.map((item) => (
-                <Option value={item?._id}>{`${item?.batchName}`}</Option>
+                <Option
+                  value={item?._id}
+                >{`${item?.batchName} - ${item?.programName}`}</Option>
               ))}
             </Select>
-            <Select
+            {/* <Select
               className="w-33 rounded-0"
               placeholder="Program"
               value={addNewStudentData.program}
@@ -1277,10 +1335,13 @@ const AdminDashboardView = () => {
               <Option value="BSE">BSE</Option>
               <Option value="BEE">BEE</Option>
               <Option value="BCE">BCE</Option>
-            </Select>
+            </Select> */}
             <Input
+              type="number"
               className="w-33"
               placeholder="000"
+              max={999}
+              min={0}
               value={addNewStudentData.regNo}
               onChange={(e) =>
                 setAddNewStudentData({
@@ -1396,8 +1457,8 @@ const AdminDashboardView = () => {
                   .includes(input.toLowerCase())
               }
             >
-              {CourseListing
-                ? CourseListing?.entry?.map((item) => (
+              {newStudentAvailableCoursesList
+                ? newStudentAvailableCoursesList?.entry?.map((item) => (
                     <Option
                       value={item?._id}
                     >{`${item.courseAbreviation} - ${item?.courseTitle}`}</Option>

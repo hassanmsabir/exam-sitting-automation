@@ -6,3 +6,5 @@ export { default as ListAllBatchesWithSections } from "./BatchActions/GetAllBatc
 export { default as ListAllBatches } from "./BatchActions/GetAllBatches";
 export { default as ListAllCourseMaps } from "./CourseActions/ListAllCourseMaps";
 export { default as ListAllStudents } from "./StudentActions/ListAllStudents";
+export { default as ListAllExamHalls } from "./ExamHallActions/ListAllExamHalls";
+export { default as ListAllExamSchedules } from "./ScheduleActions/ListAllExamSchedules";

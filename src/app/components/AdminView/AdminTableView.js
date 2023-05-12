@@ -30,6 +30,7 @@ const AdminTableView = ({
     useState(false);
   const [isDeleteStudentDataModalOpen, setIsDeleteStudentDataModalOpen] =
     useState(false);
+  const [isEditStudentModalOpen, setIsEditStudentModalOpen] = useState(false);
 
   const [newTeacherTitle, setNewTeacherTitle] = useState("Mr");
   const [newTeacherTitleErrMsg, setNewTeacherTitleErrMsg] = useState("");
@@ -85,7 +86,7 @@ const AdminTableView = ({
         openNotification(
           "topRight",
           "success",
-          "Course Map deleted successfully"
+          "Student Data deleted successfully"
         );
         apiDispatcher(actionAPI.getAllStudentsAPI());
         setIsDeleteStudentDataModalOpen(false);
@@ -114,13 +115,16 @@ const AdminTableView = ({
   };
   const handleBatchDataDeleteClick = () => {
     // /batchId=${selectedData?.batchId}&sectionId=${selectedData?.sectionId}
-    fetch(`${Settings.apiUrl}deleteSection`, {
-      method: "POST",
-      body: JSON.stringify({
-        batchId: selectedData?.batchId,
-        sectionId: selectedData?.sectionId,
-      }),
-    })
+    fetch(
+      `${Settings.apiUrl}deleteSection/${selectedData?.batchId},${selectedData?.sectionId}`,
+      {
+        method: "DELETE",
+        body: JSON.stringify({
+          batchId: selectedData?.batchId,
+          sectionId: selectedData?.sectionId,
+        }),
+      }
+    )
       .then((res) => res.json())
       .then((deletedBatch) => {
         openNotification("topRight", "success", "Batch deleted successfully");
@@ -427,6 +431,10 @@ const AdminTableView = ({
       dataIndex: "batchName",
     },
     {
+      title: "Program Name",
+      dataIndex: "programName",
+    },
+    {
       title: "Batch Section",
       dataIndex: "sectionName",
     },
@@ -473,6 +481,10 @@ const AdminTableView = ({
     {
       title: "Batch",
       dataIndex: "batchName",
+    },
+    {
+      title: "Program",
+      dataIndex: "programName",
     },
     {
       title: "Section",
@@ -537,7 +549,32 @@ const AdminTableView = ({
       title: "Batch",
       dataIndex: "semesterType",
     },
+    {
+      title: "Teacher Review",
+      dataIndex: "teacherReview",
+    },
+    {
+      title: "Cheating History",
+      dataIndex: "cheatingHistory",
+    },
 
+    {
+      title: "Edit",
+      key: "Edit",
+      render: (_, record) => {
+        return (
+          <span
+            className="text-primary cursor-pointer"
+            onClick={() => {
+              setSelectedData(record);
+              setIsEditStudentModalOpen(true);
+            }}
+          >
+            Edit
+          </span>
+        );
+      },
+    },
     {
       title: "Delete",
       key: "Delete",

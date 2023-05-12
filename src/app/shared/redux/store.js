@@ -8,6 +8,8 @@ import {
   ListAllBatches,
   ListAllCourseMaps,
   ListAllStudents,
+  ListAllExamHalls,
+  ListAllExamSchedules,
 } from "./actions";
 
 export const store = configureStore({
@@ -20,5 +22,7 @@ export const store = configureStore({
     ListAllBatches,
     ListAllCourseMaps,
     ListAllStudents,
+    ListAllExamHalls,
+    ListAllExamSchedules,
   },
 });

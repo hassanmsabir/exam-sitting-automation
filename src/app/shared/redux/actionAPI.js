@@ -9,6 +9,8 @@ import { getAllBatchesWithSectionsAPI } from "./actions/BatchActions/GetAllBatch
 import { getAllBatchesAPI } from "./actions/BatchActions/GetAllBatches";
 import { getAllCourseMapsAPI } from "./actions/CourseActions/ListAllCourseMaps";
 import { getAllStudentsAPI } from "./actions/StudentActions/ListAllStudents";
+import { getAllExamHalls } from "./actions/ExamHallActions/ListAllExamHalls";
+import { getAllExamSchedules } from "./actions/ScheduleActions/ListAllExamSchedules";
 
 export const actionAPI = {
   getMyUserAPI,
@@ -20,4 +22,6 @@ export const actionAPI = {
   getAllBatchesAPI,
   getAllCourseMapsAPI,
   getAllStudentsAPI,
+  getAllExamHalls,
+  getAllExamSchedules,
 };
