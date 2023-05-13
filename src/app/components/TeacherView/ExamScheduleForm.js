@@ -20,6 +20,7 @@ const ExamScheduleForm = ({
   const [sectionId, setSectionId] = useState("");
   const [courseId, setCourseId] = useState("");
   const [hallId, setHallId] = useState("");
+  const [noOfSeats, setNoOfSeats] = useState(0);
   const apiDispatcher = useSharedDispatcher();
   const { ExamHallsListing, ExamHallsListingSuccess, ExamHallsListingFailed } =
     useSharedSelector((state) => state.ListAllExamHalls);
@@ -60,6 +61,7 @@ const ExamScheduleForm = ({
   useEffect(() => {
     if (ExamHallsListing) {
       setHallId(ExamHallsListing[0]._id);
+      setNoOfSeats(ExamHallsListing[0].numRows * ExamHallsListing[0].numCols);
     }
   }, [ExamHallsListing]);
   return (
@@ -85,6 +87,8 @@ const ExamScheduleForm = ({
                   {data.courseAbreviation +
                     " - " +
                     data.batchName +
+                    " - " +
+                    data.programName +
                     " - Section " +
                     data.sectionName}
                 </Option>
@@ -107,6 +111,11 @@ const ExamScheduleForm = ({
             value={hallId}
             onChange={(e) => {
               setHallId(e);
+              ExamHallsListing.map((item) => {
+                if (item._id === e) {
+                  setNoOfSeats(item.numRows * item.numCols);
+                }
+              });
             }}
           >
             <Option value="">Select</Option>
@@ -115,6 +124,7 @@ const ExamScheduleForm = ({
                 <Option value={hall._id}>{hall.hallName}</Option>
               ))}
           </Select>
+          <p className="">Seats: {noOfSeats}</p>
         </div>
         <div className="w-50 p-4">
           <p className="fs-6 fw-bold">Exam Date</p>

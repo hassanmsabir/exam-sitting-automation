@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { actionAPI, useSharedDispatcher, useSharedSelector } from "../shared";
+import { Modal } from "antd";
+import SeatingArrangementTable from "../components/TeacherView/SeatingArrangementTable";
 
 const Schedule = () => {
   const { ExamSchedulesListing, ExamSchedulesListingSuccess } =
     useSharedSelector((state) => state.ListAllExamSchedules);
   const [totalStudents, setTotalStudents] = useState(0);
+  const [isViewSeatingPlanModalOpen, setIsViewSeatingPlanModalOpen] =
+    useState(false);
+  const [selectedSeatingPlan, setSelectedSeatingPlan] = useState([]);
 
   const apiDispatcher = useSharedDispatcher();
   useEffect(() => {
@@ -68,7 +73,15 @@ const Schedule = () => {
                   </p>
                 </div>
                 <div className="card-body-left">
-                  <button className="btn btn-primary">View</button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => {
+                      setIsViewSeatingPlanModalOpen(true);
+                      setSelectedSeatingPlan(item?.seatingArrangement);
+                    }}
+                  >
+                    View
+                  </button>
                 </div>
               </div>
             </div>
@@ -77,6 +90,19 @@ const Schedule = () => {
       ) : (
         <p>No Exam Schedule Data</p>
       )}
+      <Modal
+        open={isViewSeatingPlanModalOpen}
+        onOk={() => setIsViewSeatingPlanModalOpen(false)}
+        // cancelButtonProps={{ style: { display: "none" } }}
+        title="View Seating Plan"
+        width={1000}
+        style={{ height: 700 }}
+      >
+        {console.log(selectedSeatingPlan)}
+        <SeatingArrangementTable
+          resultSchedule={{ seating: selectedSeatingPlan }}
+        />
+      </Modal>
     </>
   );
 };
