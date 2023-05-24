@@ -33,6 +33,12 @@ const Header = () => {
                 Home
               </Link>
             </li>
+
+            <li className="nav-item">
+              <Link className="nav-link" to="/about" role="button">
+                About
+              </Link>
+            </li>
             {localStorage.getItem("userToken") && (
               <li className="nav-item">
                 <Link
@@ -55,30 +61,6 @@ const Header = () => {
                 </Link>
               </li>
             )}
-
-            <li className="nav-item dropdown">
-              <Link
-                className="nav-link dropdown-toggle"
-                to="/services"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Services
-              </Link>
-              <ul className="dropdown-menu">
-                <li>
-                  <Link className="dropdown-item" to="/services">
-                    Service 1
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/services">
-                    Service 2
-                  </Link>
-                </li>
-              </ul>
-            </li>
           </ul>
           <form className="d-flex" role="search">
             {localStorage.getItem("userToken") ? (

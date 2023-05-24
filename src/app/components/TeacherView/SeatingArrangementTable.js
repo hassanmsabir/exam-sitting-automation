@@ -34,7 +34,29 @@ const SeatingArrangementTable = ({
                 <td className="seating-arr-td column-name">R{rowIndex + 1}</td>
                 {row &&
                   row?.map((col, colIndex) => (
-                    <Tooltip title={col ? col.fullname : "Empty"}>
+                    <Tooltip
+                      title={
+                        <div className="d-flex flex-column">
+                          {col ? (
+                            <>
+                              <span>{col.fullname}</span>
+                              <span>
+                                <b>GPA</b>: {col.gpa}
+                              </span>
+                              <span>
+                                <b>Teacher Review</b>: {col.teacherReview}
+                              </span>
+                              <span>
+                                <b>Ever Cheated</b>:{" "}
+                                {col.cheatingHistory === 1 ? "Yes" : "No"}
+                              </span>
+                            </>
+                          ) : (
+                            "Empty"
+                          )}
+                        </div>
+                      }
+                    >
                       <td className="seating-arr-td seat">
                         {col ? `${col.fullReg}` : ""}
                       </td>

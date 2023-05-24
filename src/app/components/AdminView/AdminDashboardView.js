@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import AdminViewMainList from "./AdminViewMainList";
-import { Checkbox, DatePicker, Input, Modal, Select, notification } from "antd";
+import {
+  Checkbox,
+  DatePicker,
+  Input,
+  Modal,
+  Select,
+  Spin,
+  notification,
+} from "antd";
 import TitlesList from "../../shared/constant/TitlesList";
 import moment from "moment/moment";
 import {
@@ -21,7 +29,11 @@ const AdminDashboardView = () => {
     useSharedSelector((state) => state.ListAllCourses);
   const { StudentsListing, StudentsListingSuccess, StudentsListingLoading } =
     useSharedSelector((state) => state.ListAllStudents);
-
+  const {
+    ExamSchedulesListing,
+    ExamSchedulesListingLoading,
+    ExamSchedulesListingSuccess,
+  } = useSharedSelector((state) => state.ListAllExamSchedules);
   const {
     BatchesWithSectionsListing,
     BatchesWithSectionsListingSuccess,
@@ -527,6 +539,7 @@ const AdminDashboardView = () => {
     apiDispatcher(actionAPI.getAllBatchesAPI());
     apiDispatcher(actionAPI.getAllCourseMapsAPI());
     apiDispatcher(actionAPI.getAllStudentsAPI());
+    apiDispatcher(actionAPI.getAllExamSchedules());
   }, []);
   useEffect(() => {
     if (TeacherListingSuccess && TeacherListing.total) {
@@ -604,7 +617,7 @@ const AdminDashboardView = () => {
                     onClick={() => setAddNewCourseModalOpen(true)}
                   >
                     <span className="fs-3 fw-bolder text-light">
-                      {CourseListing ? CourseListing.total : 0}
+                      {CourseListing ? CourseListing.total : <Spin />}
                     </span>
                     <span className="fs-5 text-light">Courses Booked </span>
                   </div>
@@ -624,7 +637,7 @@ const AdminDashboardView = () => {
                     onClick={() => setAddNewCourseMapModalOpen(true)}
                   >
                     <span className="fs-3 fw-bolder text-light">
-                      {CourseMapListing ? CourseMapListing?.total : 0}
+                      {CourseMapListing ? CourseMapListing?.total : <Spin />}
                     </span>
                     <span className="fs-5 text-light">Course Mappings</span>
                   </div>
@@ -643,21 +656,20 @@ const AdminDashboardView = () => {
 
           <div className="top-row-item">
             <div className="counter-box d-flex flex-column align-items-center justify-content-center p-3 bg-danger">
-              <span className="fs-3 fw-bolder text-light">37</span>
-              <span className="fs-5 text-light">Exams Taken</span>
+              <span className="fs-3 fw-bolder text-light">
+                {ExamSchedulesListing ? ExamSchedulesListing?.total : <Spin />}
+              </span>
+              <span className="fs-5 text-light">Exams Scheduled</span>
             </div>
             <div className="item-details mt-2 bg-danger">
               <AdminViewMainList
-                data={[
-                  "Dr. Fahad",
-                  "Mr. Salah ud Din",
-                  "Dr. Farman Marwat",
-                  "Mr. Kamran Khan",
-                  "Dr. Fahad",
-                  "Mr. Salah ud Din",
-                  "Dr. Farman Marwat",
-                  "Mr. Kamran Khan",
-                ]}
+                data={
+                  ExamSchedulesListing
+                    ? ExamSchedulesListing?.entry?.map(
+                        (item) => `${item.examName} - (${item.examDate})`
+                      )
+                    : []
+                }
                 buttonColor="warning"
                 buttonText="View Details"
                 setActiveType={setActiveType}
@@ -673,9 +685,11 @@ const AdminDashboardView = () => {
                 onClick={() => setAddNewBatchModalOpen(true)}
               >
                 <span className="fs-3 fw-bolder text-light">
-                  {BatchesWithSectionsListing
-                    ? BatchesWithSectionsListing?.entry?.length
-                    : 0}
+                  {BatchesWithSectionsListing ? (
+                    BatchesWithSectionsListing?.entry?.length
+                  ) : (
+                    <Spin />
+                  )}
                 </span>
                 <span className="fs-5 text-light">Batches / Sections</span>
               </div>
@@ -695,7 +709,7 @@ const AdminDashboardView = () => {
                 onClick={() => setAddNewStudentModalOpen(true)}
               >
                 <span className="fs-3 fw-bolder text-light">
-                  {StudentsListing ? StudentsListing?.entry?.length : 0}
+                  {StudentsListing ? StudentsListing?.entry?.length : <Spin />}
                 </span>
                 <span className="fs-5 text-light">Students</span>
               </div>
@@ -718,6 +732,9 @@ const AdminDashboardView = () => {
               BatchesWithSectionsListing ? BatchesWithSectionsListing.entry : []
             }
             courseMapsData={CourseMapListing ? CourseMapListing?.entry : []}
+            examSchedulesData={
+              ExamSchedulesListing ? ExamSchedulesListing?.entry : []
+            }
             studentsData={StudentsListing ? StudentsListing?.entry : []}
             activeType={activeType}
           />

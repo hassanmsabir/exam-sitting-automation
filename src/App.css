@@ -1,9 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik+Pixels&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,300;1,400;1,500;1,600;1,700;1,800&display=swap");
 body {
   background-color: whitesmoke;
 }
 .main-banner {
-  min-height: 500px;
+  min-height: 600px;
   height: 400px;
   font-size: 30px;
   color: whitesmoke;
@@ -14,31 +15,77 @@ body {
   background-size: cover;
 }
 .main-banner .text-cover {
-  width: 70%;
+  width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   background-image: linear-gradient(
     to right,
-    rgba(0, 0, 0, 0.788),
-    rgba(66, 65, 65, 0)
+    rgba(0, 0, 0, 0.767),
+    rgb(58 58 58 / 49%)
   );
+}
+.main-banner .text-cover .project-name {
   display: flex;
-  align-items: center;
+  justify-content: center;
+  padding-top: 30px;
+  font-size: 45px !important;
+  cursor: default;
+  pointer-events: none;
+  font-weight: 500;
+  font-style: italic;
+  font-family: "Raleway", sans-serif;
+}
+.main-banner .text-cover button {
+  font-size: 25px;
+  margin-top: 40px;
+  font-weight: 500;
+  font-family: "Raleway", sans-serif;
 }
 .main-banner .banner-text {
-  width: 250px;
+  width: 100%;
+  text-align: center;
+  margin: 0 !important;
   font-weight: 600;
+  font-size: 25px;
 }
 .main-banner .banner-text span {
   color: red;
   margin: 0px 10px;
   font-family: "Rubik Pixels", cursive;
   font-size: 40px;
-  font-weight: 500;
+  font-weight: 300;
+  text-shadow: 0px 0px 5px rgba(228, 76, 76, 0.685);
 }
 
 /* ======================================================================== */
-
-.services-section {
+hr.heading-hr {
+  width: 200px;
+  border-width: 4px;
+  color: rgb(3, 100, 3);
+}
+.about-section .about-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.about-section .about-body .about-card {
+  background-color: white;
+  width: 350px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.562);
+  font-size: 23px;
+  padding: 15px;
+  text-justify: newspaper;
+  transition: all 0.2s ease-in;
+}
+.about-section .about-body .about-card:hover {
+  background-color: grey;
+  color: white;
+}
+.services-section,
+.about-section {
   min-height: 500px;
   display: flex;
   flex-direction: column;
@@ -225,4 +272,51 @@ table.seating-arr td.seat:hover {
 }
 .exam-card .card-body {
   border-radius: 0px 0px 7px 7px;
+}
+.contact-us-section .contact-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 100px;
+}
+
+.contact-us-section .contact-body .contact-card {
+  width: 350px;
+  height: 400px;
+  border-radius: 20px;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.432);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+.contact-us-section .contact-body .contact-card .contact-img {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  border: 5px solid rgb(255, 106, 47);
+  position: absolute;
+  top: -50px;
+  box-shadow: 0px 0px 5px black;
+  background-image: url("../public/muzammil-pic.jpeg");
+  background-position: center;
+  background-size: cover;
+}
+.contact-us-section .contact-body .contact-card .contact-img#pic2 {
+  width: 200px;
+  height: 200px;
+  border-radius: 100%;
+  border: 5px solid rgb(255, 106, 47);
+  position: absolute;
+  top: -50px;
+  box-shadow: 0px 0px 5px black;
+  background-image: url("../public/zakriya-pic.jpeg");
+  background-position: top;
+  background-size: cover;
+}
+.contact-us-section .contact-body .contact-card .contact-rest {
+  margin-top: 170px;
+  font-size: 17px;
+  font-family: "Raleway", sans-serif;
 }

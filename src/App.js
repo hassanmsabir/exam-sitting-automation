@@ -3,6 +3,7 @@ import "./App.css";
 import { Dashboard, Home, Login, Services } from "./app/pages";
 import { Header, PrivateRoute, PublicRoute } from "./app/components";
 import Schedule from "./app/pages/Schedule";
+import ContactUs from "./app/pages/ContactUs";
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
             <Route element={<Login />} caseSensitive path="/login" />
           </Route>
           <Route element={<Home />} caseSensitive path="/" />
-          <Route element={<Services />} caseSensitive path="/services" />
+          {/* <Route element={<Services />} caseSensitive path="/services" /> */}
+          <Route element={<ContactUs />} caseSensitive path="/about" />
         </Routes>
       </div>
     </>

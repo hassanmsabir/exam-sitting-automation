@@ -9,6 +9,7 @@ const AdminTableView = ({
   teacherData,
   coursesData,
   batchesData,
+  examSchedulesData,
   courseMapsData,
   studentsData,
 }) => {
@@ -593,6 +594,56 @@ const AdminTableView = ({
       },
     },
   ];
+  const ExamSchedulesColumns = [
+    {
+      title: "Name",
+      dataIndex: "examName",
+    },
+    {
+      title: "Date",
+      dataIndex: "examDate",
+    },
+    {
+      title: "Time",
+      dataIndex: "examTime",
+    },
+    {
+      title: "Hall",
+      dataIndex: "hallName",
+    },
+    {
+      title: "Courses",
+      key: "courses",
+      render: (_, record) => {
+        return (
+          <span>
+            {record?.classesData?.map((item) => (
+              <span>
+                {`${item?.courseName.split("-")[0]}`}
+                <br />
+              </span>
+            ))}
+          </span>
+        );
+      },
+    },
+    {
+      title: "Classes",
+      key: "classes",
+      render: (_, record) => {
+        return (
+          <span>
+            {record?.classesData?.map((item) => (
+              <span className="d-inline">
+                {`${item?.programName} - ${item?.batchName} `}
+                <br />
+              </span>
+            ))}
+          </span>
+        );
+      },
+    },
+  ];
 
   useEffect(() => {
     console.log(coursesData);
@@ -850,7 +901,10 @@ const AdminTableView = ({
         <>
           <div className="mt-3 overflow-auto">
             <h3 className="text-center text-danger">Exams Table</h3>
-            <Table columns={CoursesColumns} dataSource={coursesData} />
+            <Table
+              columns={ExamSchedulesColumns}
+              dataSource={examSchedulesData}
+            />
           </div>
         </>
       ) : activeType === "batchesTable" ? (
