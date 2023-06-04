@@ -49,10 +49,12 @@ const TeacherDashboardView = () => {
       />
 
       <hr />
-      <SeatingArrangementTable
-        resultSchedule={resultSchedule}
-        setResultSchedule={setResultSchedule}
-      />
+      {resultSchedule && (
+        <SeatingArrangementTable
+          resultSchedule={resultSchedule}
+          setResultSchedule={setResultSchedule}
+        />
+      )}
     </div>
   );
 };

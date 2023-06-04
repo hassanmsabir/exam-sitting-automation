@@ -124,7 +124,7 @@ const ExamScheduleForm = ({
                 <Option value={hall._id}>{hall.hallName}</Option>
               ))}
           </Select>
-          <p className="">Seats: {noOfSeats}</p>
+          <p className="text-success">Seats: {noOfSeats}</p>
         </div>
         <div className="w-50 p-4">
           <p className="fs-6 fw-bold">Exam Date</p>

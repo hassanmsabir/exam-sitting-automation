@@ -260,6 +260,7 @@ table.seating-arr td.seat:hover {
   font-weight: 600;
 }
 .exam-card {
+  width: 45%;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.582);
   border-radius: 7px;
   transition: all 0.2s ease-in-out;
@@ -319,4 +320,9 @@ table.seating-arr td.seat:hover {
   margin-top: 170px;
   font-size: 17px;
   font-family: "Raleway", sans-serif;
+}
+@media only screen and (max-width: 600px) {
+  .exam-card {
+    width: 100% !important;
+  }
 }
