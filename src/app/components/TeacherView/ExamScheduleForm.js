@@ -1,4 +1,4 @@
-import { DatePicker, Input, Select } from "antd";
+import { DatePicker, Input, Select, notification } from "antd";
 import { Option } from "antd/es/mentions";
 import React, { useEffect, useState } from "react";
 import Settings from "../../shared/redux/config/Settings";
@@ -24,6 +24,19 @@ const ExamScheduleForm = ({
   const apiDispatcher = useSharedDispatcher();
   const { ExamHallsListing, ExamHallsListingSuccess, ExamHallsListingFailed } =
     useSharedSelector((state) => state.ListAllExamHalls);
+  const [api, contextHolder] = notification.useNotification();
+  const openNotification = (
+    placement,
+    type,
+    message = "",
+    description = ""
+  ) => {
+    api[type]({
+      message: message,
+      description: description,
+      placement,
+    });
+  };
   const handleScheduleBtnClick = () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -49,7 +62,10 @@ const ExamScheduleForm = ({
     fetch(Settings.apiUrl + "seating-arrangement-mylogic2", requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
+        if (result.message) {
+          console.log("error ", result);
+          openNotification("topRight", "error", "Failed", result.message);
+        }
         setResultSchedule(result);
       })
       .catch((error) => console.log("error", error));
@@ -66,6 +82,7 @@ const ExamScheduleForm = ({
   }, [ExamHallsListing]);
   return (
     <>
+      {contextHolder}
       <p className="text-center fs-3">Schedule an Exam</p>
       <div className="d-flex flex-wrap">
         <div className="w-100 p-4">
